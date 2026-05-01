@@ -1,8 +1,12 @@
 #!/bin/bash
 
+export DEBIAN_FRONTEND=noninteractive
+
 #Update system and install nginx
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y nginx
+if ! command -v nginx &> /dev/null; then
+    sudo apt install -y nginx
+fi
 
 #Find nginx root directory
 find_nginx_root() {
@@ -20,8 +24,8 @@ find_nginx_root() {
 HOSTNAME=$(hostname)
 sed -i "s/__HOSTNAME__/$HOSTNAME/g" "$(dirname "$0")/index.html"
 
-# Move the modified index.html to nginx root directory
-sudo mv "$(dirname "$0")/index.html" "$(find_nginx_root)"
+# Copy the modified index.html to nginx root directory
+sudo cp "$(dirname "$0")/index.html" "$(find_nginx_root)"
 
 # Check, install and configure UFW if not present
 if ! command -v ufw &> /dev/null; then
