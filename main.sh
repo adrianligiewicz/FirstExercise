@@ -4,7 +4,7 @@
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y nginx
 
-#Find nginx root directory and move index.html there
+#Find nginx root directory
 find_nginx_root() {
     local config=$(nginx -t 2>&1 | grep -m1 -o '/[^ ]*nginx.conf')
     local include_line=$(grep -E 'include.*sites-enabled' "$config")
@@ -16,13 +16,17 @@ find_nginx_root() {
     echo "$root_path"
 }
 
+# Replace hostname placeholder with actual hostname
+HOSTNAME=$(hostname)
+sed -i "s/__HOSTNAME__/$HOSTNAME/g" "$(dirname "$0")/index.html"
+
+# Move the modified index.html to nginx root directory
 sudo mv "$(dirname "$0")/index.html" "$(find_nginx_root)"
 
 # Check, install and configure UFW if not present
 if ! command -v ufw &> /dev/null; then
     sudo apt install -y ufw
 fi
-
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow 'ssh'
 sudo ufw --force enable
