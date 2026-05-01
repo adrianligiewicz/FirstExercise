@@ -24,8 +24,10 @@ find_nginx_root() {
 HOSTNAME=$(hostname)
 sed -i "s/__HOSTNAME__/$HOSTNAME/g" "$(dirname "$0")/index.html"
 
-# Copy the modified index.html to nginx root directory
+# Copy the modified index.html to nginx root directory and set permissions
 sudo cp "$(dirname "$0")/index.html" "$(find_nginx_root)"
+sudo chown www-data:www-data /var/www/html/index.html
+sudo chmod 644 /var/www/html/index.html
 
 # Check, install and configure UFW if not present
 if ! command -v ufw &> /dev/null; then
