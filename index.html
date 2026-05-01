@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hostname and Date/Time</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+        }
+        #info {
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <div>Hostname: <span id="hostname"></span></div>
+        <div>Current date and time: <span id="datetime"></span></div>
+    </div>
+
+    <script>
+        const hostname = window.location.hostname || 'localhost';
+        const now = new Date();
+        const formatted = now.toLocaleString();
+
+        document.getElementById('hostname').textContent = hostname;
+        document.getElementById('datetime').textContent = formatted;
+    </script>
+</body>
+</html>
