@@ -36,4 +36,4 @@ sudo ufw allow 'ssh'
 sudo ufw --force enable
 
 #Start nginx
-sudo systemctl start nginx
+sudo systemctl restart nginx
