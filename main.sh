@@ -16,7 +16,7 @@ find_nginx_root() {
     echo "$root_path"
 }
 
-mv "$(dirname "$0")/index.html" "$(find_nginx_root)"
+sudo mv "$(dirname "$0")/index.html" "$(find_nginx_root)"
 
 # Check, install and configure UFW if not present
 if ! command -v ufw &> /dev/null; then
@@ -25,7 +25,7 @@ fi
 
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow 'ssh'
-sudo ufw enable
+sudo ufw --force-enable
 
 #Start nginx
 sudo systemctl start nginx
